@@ -73,6 +73,14 @@ public class SecurityConfig {
                         // ownership for STUDENT)
                         .requestMatchers("/api/results/**").authenticated()
 
+                        // Notifications — every authenticated user accesses their own only (enforced in
+                        // service layer)
+                        .requestMatchers("/api/notifications/**").authenticated()
+
+                        // Audit logs — admin only (covered by /api/admin/** above, but explicit for
+                        // clarity)
+                        .requestMatchers("/api/admin/audit-logs/**").hasRole("ADMIN")
+
                         .anyRequest().authenticated())
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

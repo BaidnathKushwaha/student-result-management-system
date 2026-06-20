@@ -1008,3 +1008,38 @@ textarea:focus-visible {
         top: 0 !important;
     }
 }
+
+/* ============================================
+   Notifications & Audit Log Custom Styles
+   ============================================ */
+
+.eg-notification-item {
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-left-color 0.15s ease;
+    border-left: 3px solid transparent;
+}
+
+.eg-notification-item.unread {
+    border-left-color: var(--color-red) !important;
+}
+
+.eg-notification-item.unread:hover {
+    background-color: var(--color-gold-light) !important;
+    opacity: 0.95;
+}
+
+.eg-notification-item.read:hover {
+    background-color: var(--color-cream) !important;
+}
+
+.eg-dashboard-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: var(--space-5);
+}
+
+@media (max-width: 1024px) {
+    .eg-dashboard-grid {
+        grid-template-columns: 1fr !important;
+    }
+}

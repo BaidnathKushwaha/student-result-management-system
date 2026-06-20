@@ -24,8 +24,42 @@ export const getGpaBadgeVariant = (gpa) => {
     return 'red';
 };
 
-export const formatDate = (date = new Date()) =>
-    new Intl.DateTimeFormat('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }).format(date);
+export const formatDate = (...args) => {
+    const date = args.length === 0 ? new Date() : args[0];
+    if (!date) return 'N/A';
+
+    const parsedDate = new Date(date);
+
+    if (isNaN(parsedDate.getTime())) {
+        return 'Invalid Date';
+    }
+
+    return new Intl.DateTimeFormat('en-IN', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric'
+    }).format(parsedDate);
+};
+
+export const formatDateTime = (date) => {
+    if (!date) return 'N/A';
+
+    const parsedDate = new Date(date);
+
+    if (isNaN(parsedDate.getTime())) {
+        return 'Invalid Date';
+    }
+
+    return new Intl.DateTimeFormat('en-IN', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true
+    }).format(parsedDate);
+};
 
 export const formatNumber = (value, decimals = 2) => {
     if (value === null || value === undefined || Number.isNaN(value)) return '—';

@@ -17,6 +17,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.resultmanagement.util.AuditAction;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +28,7 @@ public class AuthService {
         private final PasswordEncoder passwordEncoder;
         private final AuthenticationManager authenticationManager;
         private final JwtUtil jwtUtil;
+        private final AuditLogService auditLogService;
 
         public AuthResponse register(RegisterRequest request) {
                 if (userRepository.existsByUsername(request.getUsername())) {
@@ -34,7 +36,8 @@ public class AuthService {
                                         "Username '" + request.getUsername() + "' is already taken");
                 }
 
-                if (request.getReferenceId() != null && userRepository.existsByReferenceIdAndRole(request.getReferenceId(), request.getRole())) {
+                if (request.getReferenceId() != null && userRepository
+                                .existsByReferenceIdAndRole(request.getReferenceId(), request.getRole())) {
                         throw new DuplicateResourceException("Profile already linked to another account");
                 }
 
@@ -55,6 +58,9 @@ public class AuthService {
 
                 userRepository.save(user);
 
+                auditLogService.log(AuditAction.USER_REGISTERED, String.format("New %s account registered: %s",
+                                user.getRole().name(), user.getUsername()), "User", user.getId());
+
                 CustomUserDetails userDetails = new CustomUserDetails(user);
                 String token = jwtUtil.generateToken(userDetails, user.getId(), user.getRole().name());
 
@@ -72,6 +78,10 @@ public class AuthService {
 
                 User user = userRepository.findByUsername(request.getUsername())
                                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+                auditLogService.log(AuditAction.USER_LOGGED_IN,
+                                String.format("%s logged in (%s)", user.getUsername(), user.getRole().name()), "User",
+                                user.getId());
 
                 CustomUserDetails userDetails = new CustomUserDetails(user);
                 String token = jwtUtil.generateToken(userDetails, user.getId(), user.getRole().name());

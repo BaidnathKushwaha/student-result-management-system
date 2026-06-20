@@ -43,6 +43,13 @@ public class ResultController {
         return ResponseEntity.ok(resultService.getResultByStudentId(studentId, semester));
     }
 
+    @PostMapping("/student/{studentId}/semester/{semester}/log-download")
+    public ResponseEntity<Void> logDownload(@PathVariable Long studentId, @PathVariable Integer semester) {
+        verifyAccess(studentId);
+        resultService.logTranscriptDownload(studentId, semester);
+        return ResponseEntity.ok().build();
+    }
+
     private void verifyAccess(Long studentId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import DashboardCard from '../../components/dashboard/DashboardCard';
 import StatsChart from '../../components/dashboard/StatsChart';
 import Loader from '../../components/common/Loader';
+import RecentActivities from '../../components/dashboard/RecentActivities';
 import { fetchStudents } from '../../services/studentService';
 import { fetchFaculty } from '../../services/facultyService';
 import { fetchSubjects } from '../../services/subjectService';
@@ -64,13 +65,17 @@ export default function AdminDashboard() {
                 <DashboardCard label="Results published" value="—" icon="award" footer="Generate results per semester" />
             </div>
 
-            <div className="eg-card">
-                <div className="eg-card-header">
-                    <span className="eg-card-title">Students by semester</span>
+            <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: 24, marginTop: 24 }} className="eg-dashboard-grid">
+                <div className="eg-card" style={{ height: 'fit-content' }}>
+                    <div className="eg-card-header">
+                        <span className="eg-card-title">Students by semester</span>
+                    </div>
+                    <div className="eg-card-padded">
+                        <StatsChart data={bySemester} />
+                    </div>
                 </div>
-                <div className="eg-card-padded">
-                    <StatsChart data={bySemester} />
-                </div>
+
+                <RecentActivities />
             </div>
         </div>
     );

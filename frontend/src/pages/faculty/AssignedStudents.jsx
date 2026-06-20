@@ -8,7 +8,8 @@ import StudentDetails from '../../components/students/StudentDetails';
 import Icon from '../../assets/icons/Icon';
 import { usePagination } from '../../hooks/usePagination';
 import { useDebounce } from '../../hooks/useDebounce';
-import { fetchFacultyViewStudents } from '../../services/studentService';
+import { fetchFacultyViewStudents, promoteStudents } from '../../services/studentService';
+import { SEMESTERS } from '../../utils/constants';
 import { getErrorMessage } from '../../utils/helpers';
 
 export default function FacultyAssignedStudents() {
@@ -16,6 +17,29 @@ export default function FacultyAssignedStudents() {
     const [search, setSearch] = useState('');
     const debouncedSearch = useDebounce(search, 300);
     const [viewing, setViewing] = useState(null);
+    const [promoteModalOpen, setPromoteModalOpen] = useState(false);
+    const [promoteSemester, setPromoteSemester] = useState('');
+    const [promoting, setPromoting] = useState(false);
+
+    const handlePromoteSubmit = async (e) => {
+        e.preventDefault();
+        if (!promoteSemester) {
+            toast.error('Please select a semester');
+            return;
+        }
+        setPromoting(true);
+        try {
+            await promoteStudents(Number(promoteSemester));
+            toast.success('Students promoted successfully!');
+            setPromoteModalOpen(false);
+            setPromoteSemester('');
+            pagination.load({ page: 0 }); // Reset to page 0 to see updated results
+        } catch (err) {
+            toast.error(getErrorMessage(err));
+        } finally {
+            setPromoting(false);
+        }
+    };
 
     useEffect(() => {
         pagination.load({ page: 0 });
@@ -40,6 +64,10 @@ export default function FacultyAssignedStudents() {
                 <div className="eg-card">
                     <div className="eg-card-header">
                         <span className="eg-card-title">All students</span>
+                        <button type="button" className="eg-btn eg-btn-primary eg-btn-sm" onClick={() => setPromoteModalOpen(true)}>
+                            <Icon name="refresh" size={15} />
+                            Promote Students
+                        </button>
                     </div>
                     <div style={{ padding: '16px 20px 0' }}>
                         <div className="eg-toolbar">
@@ -76,6 +104,60 @@ export default function FacultyAssignedStudents() {
                     </div>
                 )}
             </div>
+
+            {promoteModalOpen && (
+                <div className="eg-modal-overlay" onClick={() => { setPromoteModalOpen(false); setPromoteSemester(''); }}>
+                    <div className="eg-modal" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true">
+                        <div className="eg-modal-header">
+                            <h3 style={{ fontSize: 18 }}>Promote Students</h3>
+                            <button type="button" className="eg-modal-close" onClick={() => { setPromoteModalOpen(false); setPromoteSemester(''); }} aria-label="Close">
+                                <Icon name="x" size={18} />
+                            </button>
+                        </div>
+                        <div className="eg-modal-body">
+                            <form onSubmit={handlePromoteSubmit}>
+                                <div className="eg-field" style={{ marginBottom: 20 }}>
+                                    <label className="eg-label" htmlFor="promoteSemester">Current Semester</label>
+                                    <select
+                                        id="promoteSemester"
+                                        className="eg-select"
+                                        value={promoteSemester}
+                                        onChange={(e) => setPromoteSemester(e.target.value)}
+                                        required
+                                    >
+                                        <option value="">Select current semester</option>
+                                        {SEMESTERS.filter(s => s < 8).map((s) => (
+                                            <option key={s} value={s}>
+                                                Semester {s}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                                
+                                {promoteSemester && (
+                                    <div className="eg-card eg-card-padded" style={{ backgroundColor: 'var(--color-navy-light)', border: '1px solid var(--color-navy)', marginBottom: 20 }}>
+                                        <p style={{ color: '#ffffff', fontSize: 14, margin: 0, display: 'flex', alignItems: 'center', gap: 8 }}>
+                                            <Icon name="alert" size={16} />
+                                            <span>
+                                                All students currently in <strong>Semester {promoteSemester}</strong> will be automatically promoted to <strong>Semester {Number(promoteSemester) + 1}</strong>.
+                                            </span>
+                                        </p>
+                                    </div>
+                                )}
+
+                                <div className="eg-form-actions">
+                                    <button type="button" className="eg-btn eg-btn-secondary" onClick={() => { setPromoteModalOpen(false); setPromoteSemester(''); }} disabled={promoting}>
+                                        Cancel
+                                    </button>
+                                    <button type="submit" className="eg-btn eg-btn-primary" disabled={promoting || !promoteSemester}>
+                                        {promoting ? 'Promoting…' : 'Promote'}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

@@ -31,6 +31,7 @@ export const NAV_LINKS = {
         { to: '/admin/subjects', label: 'Subjects', icon: 'book' },
         { to: '/admin/marks', label: 'Marks', icon: 'edit' },
         { to: '/admin/reports', label: 'Reports', icon: 'bar-chart' },
+        { to: '/admin/audit-logs', label: 'Audit Logs', icon: 'activity' },
     ],
     FACULTY: [
         { to: '/faculty/dashboard', label: 'Dashboard', icon: 'grid' },
@@ -43,5 +44,6 @@ export const NAV_LINKS = {
         { to: '/student/profile', label: 'My Profile', icon: 'user' },
         { to: '/student/results', label: 'My Results', icon: 'award' },
         { to: '/student/semester-results', label: 'Semester Results', icon: 'book' },
+        { to: '/student/notifications', label: 'Notifications', icon: 'bell' },
     ],
 };

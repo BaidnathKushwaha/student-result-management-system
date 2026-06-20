@@ -1,7 +1,7 @@
 import Icon from '../../assets/icons/Icon';
 import { formatDate } from '../../utils/helpers';
 
-export default function Navbar({ onMenuClick, title }) {
+export default function Navbar({ onMenuClick, title, children }) {
     return (
         <header className="eg-topbar">
             <div className="eg-topbar-left">
@@ -10,7 +10,10 @@ export default function Navbar({ onMenuClick, title }) {
                 </button>
                 {title && <span style={{ fontWeight: 600, fontSize: 15 }}>{title}</span>}
             </div>
-            <span className="eg-topbar-date">{formatDate()}</span>
+            <div className="eg-topbar-right" style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+                <span className="eg-topbar-date">{formatDate()}</span>
+                {children}
+            </div>
         </header>
     );
 }

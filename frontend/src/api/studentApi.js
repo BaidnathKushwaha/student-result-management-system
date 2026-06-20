@@ -18,5 +18,7 @@ export const getFacultyStudentsApi = (params) => axiosInstance.get('/faculty/stu
 
 export const getFacultyStudentByIdApi = (id) => axiosInstance.get(`/faculty/students/${id}`);
 
+export const promoteStudentsApi = (currentSemester) => axiosInstance.post(`/faculty/students/promote?currentSemester=${currentSemester}`);
+
 // ---- Student: own profile ----
 export const getMyProfileApi = () => axiosInstance.get('/student/profile/me');

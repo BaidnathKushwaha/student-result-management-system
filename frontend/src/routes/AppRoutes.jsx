@@ -16,6 +16,7 @@ import AdminFaculty from '../pages/admin/Faculty';
 import AdminSubjects from '../pages/admin/Subjects';
 import AdminMarks from '../pages/admin/Marks';
 import AdminReports from '../pages/admin/Reports';
+import AdminAuditLogs from '../pages/admin/AuditLogs';
 
 import FacultyDashboard from '../pages/faculty/Dashboard';
 import FacultyAssignedStudents from '../pages/faculty/AssignedStudents';
@@ -26,6 +27,7 @@ import StudentDashboard from '../pages/student/Dashboard';
 import StudentMyProfile from '../pages/student/MyProfile';
 import StudentMyResults from '../pages/student/MyResults';
 import StudentSemesterResults from '../pages/student/SemesterResults';
+import StudentNotifications from '../pages/student/Notifications';
 
 import { ROLES } from '../utils/constants';
 import { useAuth } from '../hooks/useAuth';
@@ -59,6 +61,7 @@ export default function AppRoutes() {
                         <Route path="subjects" element={<AdminSubjects />} />
                         <Route path="marks" element={<AdminMarks />} />
                         <Route path="reports" element={<AdminReports />} />
+                        <Route path="audit-logs" element={<AdminAuditLogs />} />
                     </Route>
                 </Route>
 
@@ -79,6 +82,7 @@ export default function AppRoutes() {
                         <Route path="profile" element={<StudentMyProfile />} />
                         <Route path="results" element={<StudentMyResults />} />
                         <Route path="semester-results" element={<StudentSemesterResults />} />
+                        <Route path="notifications" element={<StudentNotifications />} />
                     </Route>
                 </Route>
             </Route>

@@ -1,14 +1,28 @@
 import { getGpaBadgeVariant, formatNumber } from '../../utils/helpers';
 import { getGradeLabel } from '../../utils/helpers';
 import Icon from '../../assets/icons/Icon';
+import { logTranscriptDownload } from '../../services/notificationService';
+import { useAuth } from '../../hooks/useAuth';
 
 export default function ResultCard({ result }) {
+    const { role } = useAuth();
+
+    const triggerDownloadLog = async () => {
+        if (role === 'STUDENT' && result.studentId && result.semester) {
+            try {
+                await logTranscriptDownload(result.studentId, result.semester);
+            } catch (err) {
+                console.error('Failed to log transcript download:', err);
+            }
+        }
+    };
     if (!result) return null;
 
     const gpaVariant = getGpaBadgeVariant(result.gpa);
 
     const handleDownloadCSV = () => {
         if (!result.subjectMarks) return;
+        triggerDownloadLog();
         const headers = ['Subject Code', 'Subject Name', 'Internal Marks', 'External Marks', 'Total Marks', 'Grade'];
         const rows = result.subjectMarks.map(m => [
             m.subjectCode,
@@ -100,7 +114,7 @@ export default function ResultCard({ result }) {
 
                 {/* Print and Export actions */}
                 <div className="eg-transcript-actions no-print" style={{ marginTop: 24, display: 'flex', gap: 12 }}>
-                    <button type="button" onClick={() => window.print()} className="eg-btn eg-btn-primary eg-btn-sm">
+                    <button type="button" onClick={() => { triggerDownloadLog(); window.print(); }} className="eg-btn eg-btn-primary eg-btn-sm">
                         <Icon name="print" size={14} /> Print / Save PDF
                     </button>
                     <button type="button" onClick={handleDownloadCSV} className="eg-btn eg-btn-secondary eg-btn-sm">

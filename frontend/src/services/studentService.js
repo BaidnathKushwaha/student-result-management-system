@@ -7,6 +7,7 @@ import {
     getFacultyStudentsApi,
     getFacultyStudentByIdApi,
     getMyProfileApi,
+    promoteStudentsApi,
 } from '../api/studentApi';
 
 export const fetchStudents = async ({ page = 0, size = 10, sortBy = 'name' } = {}) => {
@@ -45,5 +46,10 @@ export const fetchFacultyViewStudentById = async (id) => {
 
 export const fetchMyProfile = async () => {
     const { data } = await getMyProfileApi();
+    return data;
+};
+
+export const promoteStudents = async (currentSemester) => {
+    const { data } = await promoteStudentsApi(currentSemester);
     return data;
 };

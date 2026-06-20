@@ -29,6 +29,9 @@ const paths = {
     mail: 'M4 4h16v16H4V4zm0 0l8 9 8-9',
     download: 'M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3',
     print: 'M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6v-8z',
+    bell: 'M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0',
+    activity: 'M22 12h-4l-3 9L9 3l-3 9H2',
+    file: 'M14 2H6a2 2 0 00-2 2v16a2 2 0 002-2V8zM14 2v6h6M16 13H8M16 17H8M10 9H8',
 };
 
 export default function Icon({ name, size = 18, strokeWidth = 1.8, className = '' }) {

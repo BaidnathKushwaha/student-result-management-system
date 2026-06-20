@@ -5,11 +5,14 @@ import DashboardCard from '../../components/dashboard/DashboardCard';
 import Loader from '../../components/common/Loader';
 import { fetchMyProfile } from '../../services/studentService';
 import { fetchResult } from '../../services/resultService';
+import { fetchUnreadNotifications } from '../../services/notificationService';
 import { getErrorMessage, formatNumber } from '../../utils/helpers';
+import Icon from '../../assets/icons/Icon';
 
 export default function StudentDashboard() {
     const [profile, setProfile] = useState(null);
     const [result, setResult] = useState(null);
+    const [recentNotifications, setRecentNotifications] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -23,6 +26,12 @@ export default function StudentDashboard() {
                     setResult(resultData);
                 } catch {
                     setResult(null); // No result generated yet for current semester — not an error state
+                }
+                try {
+                    const notifyData = await fetchUnreadNotifications();
+                    setRecentNotifications(notifyData.slice(0, 3));
+                } catch {
+                    setRecentNotifications([]);
                 }
             } catch (err) {
                 toast.error(getErrorMessage(err));
@@ -61,26 +70,53 @@ export default function StudentDashboard() {
                 <DashboardCard label="Department" value={profile?.department ?? '—'} icon="briefcase" />
             </div>
 
-            <div className="eg-card eg-card-padded">
-                <h3 style={{ fontSize: 16, marginBottom: 8 }}>Recent results</h3>
-                {result ? (
-                    <p style={{ color: 'var(--color-slate)', fontSize: 14 }}>
-                        Your latest result for Semester {result.semester} shows a GPA of{' '}
-                        <strong>{formatNumber(result.gpa, 2)}</strong> with {formatNumber(result.percentage, 1)}% overall.{' '}
-                        <Link to="/student/results" style={{ textDecoration: 'underline', fontWeight: 600 }}>
-                            View full breakdown →
+            <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: 24, marginTop: 24 }} className="eg-dashboard-grid">
+                <div className="eg-card eg-card-padded" style={{ height: 'fit-content' }}>
+                    <h3 style={{ fontSize: 16, marginBottom: 12 }}>Recent results</h3>
+                    {result ? (
+                        <p style={{ color: 'var(--color-slate)', fontSize: 14, lineHeight: 1.6 }}>
+                            Your latest result for Semester {result.semester} shows a GPA of{' '}
+                            <strong>{formatNumber(result.gpa, 2)}</strong> with {formatNumber(result.percentage, 1)}% overall.{' '}
+                            <Link to="/student/results" style={{ textDecoration: 'underline', fontWeight: 600, color: 'var(--color-navy)' }}>
+                                View full breakdown →
+                            </Link>
+                        </p>
+                    ) : (
+                        <p style={{ color: 'var(--color-slate)', fontSize: 14, lineHeight: 1.6 }}>
+                            No result has been generated for your current semester yet. Check back once your faculty has
+                            recorded and published marks, or browse{' '}
+                            <Link to="/student/semester-results" style={{ textDecoration: 'underline', fontWeight: 600, color: 'var(--color-navy)' }}>
+                                past semesters
+                            </Link>
+                            .
+                        </p>
+                    )}
+                </div>
+
+                <div className="eg-card eg-card-padded" style={{ height: 'fit-content' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+                        <h3 style={{ fontSize: 16 }}>Latest Alerts</h3>
+                        <Link to="/student/notifications" style={{ fontSize: 12, fontWeight: 600, color: 'var(--color-gold)', textDecoration: 'underline' }}>
+                            View All
                         </Link>
-                    </p>
-                ) : (
-                    <p style={{ color: 'var(--color-slate)', fontSize: 14 }}>
-                        No result has been generated for your current semester yet. Check back once your faculty has
-                        recorded and published marks, or browse{' '}
-                        <Link to="/student/semester-results" style={{ textDecoration: 'underline', fontWeight: 600 }}>
-                            past semesters
-                        </Link>
-                        .
-                    </p>
-                )}
+                    </div>
+                    {recentNotifications.length === 0 ? (
+                        <p style={{ color: 'var(--color-slate-light)', fontSize: 13 }}>
+                            No new unread notifications.
+                        </p>
+                    ) : (
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                            {recentNotifications.map(n => (
+                                <div key={n.id} style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                                    <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--color-red)', flexShrink: 0 }} />
+                                    <span style={{ fontSize: 13, color: 'var(--color-navy)', fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                        {n.title}
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     );
