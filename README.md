@@ -22,14 +22,15 @@ The application follows a secure client-server architecture with JWT-based authe
 
 # 🚀 Features
 
-## 🔐 Authentication & Authorization
+## 🔐 Authentication & Security
 
 * JWT Authentication
-* Role-Based Access Control (RBAC)
+* Role-Based Access Control (Admin, Faculty, Student)
 * BCrypt Password Encryption
 * Secure Login & Registration
 * Protected Frontend Routes
 * Stateless Session Management
+* Spring Security Integration
 
 ---
 
@@ -41,7 +42,9 @@ The application follows a secure client-server architecture with JWT-based authe
 * Update Student
 * Delete Student
 * View Student Details
+* Search Students
 * Pagination & Sorting
+* Semester Promotion Workflow
 
 ### Faculty Management
 
@@ -49,6 +52,7 @@ The application follows a secure client-server architecture with JWT-based authe
 * Update Faculty
 * Delete Faculty
 * View Faculty Details
+* Search Faculty Records
 
 ### Subject Management
 
@@ -56,56 +60,97 @@ The application follows a secure client-server architecture with JWT-based authe
 * Update Subject
 * Delete Subject
 * View Subject Details
+* Credit & Semester Assignment
 
-### Academic Management
+### Academic Administration
 
-* Manage Marks
-* Generate Results
+* Manage Student Marks
+* Generate Semester Results
 * View Reports
+* Export Academic Records
+* Monitor System Activities
 
 ---
 
 ## 👨‍🏫 Faculty Module
 
-* View Student List
-* View Student Details
+* Faculty Dashboard
+* View Assigned Students
 * Enter Internal Marks
 * Enter External Marks
-* Update Marks
-* View Generated Results
+* Update Existing Marks
+* View Student Results
+* Activity Tracking Through Audit Logs
 
 ---
 
 ## 👨‍🎓 Student Module
 
-* View Own Profile
+* Student Dashboard
+* View Personal Profile
 * View Semester-wise Results
-* View GPA
-* View Percentage
-* Download Result Sheet
+* View GPA & Percentage
+* Download Result Reports
+* Real-Time Notifications
+* Marks Update Alerts
+* Result Publication Alerts
 
 ---
 
-## 📊 Result Processing
+## 📊 Result Processing Engine
 
 * Automatic Result Generation
 * Semester-wise GPA Calculation
 * Percentage Calculation
 * Grade Assignment
 * Credit-Based Evaluation
-* Downloadable Result Report
+* Grade Summary Generation
+* Academic Performance Tracking
 
 ---
 
-## 📄 Result Download Feature
+## 🔔 Notification System
 
-Students can download their semester results directly from the application.
+* Student Notification Center
+* Marks Update Notifications
+* Result Publication Notifications
+* Read / Unread Status Tracking
+* Notification History
 
-Downloaded report contains:
+---
+
+## 📝 Audit Logging System
+
+* Track Administrative Activities
+* Track Faculty Actions
+* Record Academic Operations
+* Timestamped Activity History
+* Recent Activity Dashboard
+
+Examples:
+
+* Student Created
+* Student Updated
+* Marks Modified
+* Result Generated
+* Semester Promotion Executed
+
+---
+
+## 📄 Reporting & Export
+
+* Download Result Sheet as PDF
+* Export Data as CSV
+* Semester-wise Academic Reports
+* GPA & Percentage Reports
+* Printable Result Documents
+
+Downloaded reports contain:
 
 * Student Information
 * Semester Details
 * Subject-wise Marks
+* Internal & External Scores
 * Total Marks
 * Percentage
 * GPA
@@ -113,17 +158,23 @@ Downloaded report contains:
 
 ---
 
-## ⚡ Additional Features
+## ⚡ Technical Features
 
-* Global Exception Handling
-* Validation Using Jakarta Validation
-* Swagger/OpenAPI Documentation
+* Spring Boot 3
+* Spring Security
+* JWT Authentication
+* Spring Data JPA
+* Hibernate ORM
+* MySQL Database
 * RESTful API Design
-* Pagination
-* Sorting
+* Swagger / OpenAPI Documentation
+* Global Exception Handling
+* Jakarta Validation
 * DTO Architecture
 * Clean Layered Architecture
-* Responsive User Interface
+* Responsive React Frontend
+* Axios API Integration
+* Pagination & Sorting Support
 
 ---
 
