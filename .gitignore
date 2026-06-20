@@ -1,0 +1,29 @@
+# IntelliJ
+
+.idea/
+
+# VS Code
+
+.vscode/
+
+# Maven
+
+target/
+
+# React
+
+node_modules/
+dist/
+
+# Environment Files
+
+.env
+
+# OS Files
+
+.DS_Store
+Thumbs.db
+
+# Logs
+
+*.log
